@@ -1,8 +1,7 @@
 def main():
     with open("books/frankenstein.txt") as f:
         file_contents = f.read()
-        char_counts = count_characters(file_contents)
-        print(char_counts)
+        print_report(file_contents)
 
 def calculate_number_of_words(text):
     words = text.split()
@@ -17,6 +16,30 @@ def count_characters(text):
         else:
             result[ch] = 1
 
-    return result
+    output = []
+
+    for item in result:
+        output.append({"name": item, "num": result[item]})
+
+    return output
+
+def sort_on(dict):
+    return dict["num"]
+
+def print_report(text):
+    number_of_words = calculate_number_of_words(text)
+    char_counts = count_characters(text)
+
+    char_counts.sort(reverse=True, key=sort_on)
+
+    print("--- Begin report of books/frankenstein.txt ---")
+    print(f"{number_of_words} words found in the document")
+    print()
+
+    for char in char_counts:
+        if char["name"] >= 'a' and char["name"] <= 'z':
+            print(f"The '{char["name"]}' character was found {char["num"]} times")
+
+    print("--- End report ---")
 
 main()
